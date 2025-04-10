@@ -1,4 +1,3 @@
-// src/components/Player.js - Fixed version
 import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX } from 'lucide-react';
 
@@ -10,17 +9,12 @@ const Player = ({ song, onEnded, playlist, onPlayNext, onPlayPrevious }) => {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(null);
 
-  // This key will force the audio element to re-render when the song changes
   const [audioKey, setAudioKey] = useState(0);
 
-  // Reset audio and update key when song changes
   useEffect(() => {
     if (song) {
-      // Increment the key to force a re-render of the audio element
       setAudioKey(prevKey => prevKey + 1);
-      // Reset current time
       setCurrentTime(0);
-      // Auto-play when a new song is selected
       setIsPlaying(true);
     }
   }, [song]);
@@ -30,14 +24,11 @@ const Player = ({ song, onEnded, playlist, onPlayNext, onPlayPrevious }) => {
       if (isPlaying) {
         const playPromise = audioRef.current.play();
 
-        // Handle the promise to avoid the "Uncaught (in promise)" error
         if (playPromise !== undefined) {
           playPromise
             .then(() => {
-              // Auto-play started successfully
             })
             .catch(error => {
-              // Auto-play was prevented
               console.warn("Auto-play was prevented:", error);
               setIsPlaying(false);
             });
@@ -46,7 +37,7 @@ const Player = ({ song, onEnded, playlist, onPlayNext, onPlayPrevious }) => {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, audioKey]); // Add audioKey to dependencies so this runs when the audio element is re-rendered
+  }, [isPlaying, audioKey]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -94,7 +85,7 @@ const Player = ({ song, onEnded, playlist, onPlayNext, onPlayPrevious }) => {
   return (
     <div className="player slide-up">
       <audio
-        key={audioKey} // This forces a complete re-mount of the audio element when the song changes
+        key={audioKey}
         ref={audioRef}
         src={song.audio_file}
         onTimeUpdate={handleTimeUpdate}

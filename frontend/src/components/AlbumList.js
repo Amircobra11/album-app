@@ -25,14 +25,11 @@ const AlbumList = () => {
 
     fetchAlbums();
   }, []);
-
-  // Filter albums based on search term
   const filteredAlbums = albums.filter(album =>
     album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     album.artist_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sort albums based on selected sort option
   const sortedAlbums = [...filteredAlbums].sort((a, b) => {
     if (sortBy === 'title') {
       return a.title.localeCompare(b.title);
